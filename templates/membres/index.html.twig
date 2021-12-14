@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membres{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+
+
+    <h2>Choisissez un membre sans soirée pour continuer</h2>
+
+    <form>
+        <label for="listMembers">Sélection du membre</label>
+        <select id="listMembers" onchange="getSelectedMember()">
+            <option value="" disabled selected>Merci de choisir un membre inactif</option>
+            {% for m in membres %}
+                <option value="{{ m.id }}">{{ m.name }}</option>
+            {% endfor %}
+        </select>
+        <a href="#" id="btnGo" class="btn btn-primary">Sélectionner</a>
+    </form>
+
+        <a href="{{ path("membres_add") }}" class="btn btn-success">Ajouter un membre</a>
+
+
+<div class="mt-5 col">
+    <a href="#" class="btn btn-success">Ajouter une soirée</a>
+    <a href="#" class="btn btn-success">Afficher les soirées</a>
+</div>
+
+
+    </div>
+
+
+
+
+    <script>
+
+        function getSelectedMember() {
+            //Get the id of the member
+            var select = document.getElementById('listMembers');
+            var selectValue = select.options[select.selectedIndex].value;
+
+            //Set the select member
+            var idMember = document.getElementById("btnGo");
+            idMember.setAttribute('href', 'membres/select/' + selectValue);
+        }
+
+    </script>
+
+{% endblock %}

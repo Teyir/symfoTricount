@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Selection du membre:{{ membre.name}} {% endblock %}
+
+{% block body %}
+
+    <h1>Vous avez choisis le membre <strong>{{ membre.name }}</strong></h1>
+
+    <a href="#" class="btn btn-success">Rejoindre une soirée</a>
+
+    <!-- Si le membre fait partie d'une soirée active il pourra y ajouter de l'argent -->
+
+
+{% endblock %}
