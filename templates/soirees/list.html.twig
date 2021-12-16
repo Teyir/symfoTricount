@@ -25,8 +25,9 @@
                     <td>{{ s.dateStart|date('d-m-Y') }}</td>
                     <td>{{ s.dateFinish|date('d-m-Y') }}</td>
                     <td>
+                        <a href="{{ path('soirees_manage', {"id":s.id}) }}" class="btn btn-sm btn-success">Gérer</a>
                         <a href="#" class="btn btn-sm btn-warning">Modifier</a>
-                        <a href="#" class="btn btn-sm btn-danger">Supprimer</a>
+                        <a href="{{ path('soirees_delete', {"id":s.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

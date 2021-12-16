@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de là soirée {{ party.name }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+
+
+            {% for m in membres %}
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="idM" value="{{ m.id }}" hidden>
+                        <input type="hidden" name="idP" value="{{ party.id }}" hidden>
+                            <label class="input-group-text" for="membre-{{ m.name }}">Solde de {{ m.name }}</label>
+                            <input class="form-control" type="number" name="membre-{{ m.name }}">
+                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Sauvegarder</button>
+                    </div>
+                </form>
+            {% endfor %}
+        <hr class="my-4">
+
+        <div class="input-group mb-3">
+            {{ form(form) }}
+        </div>
+
+
+        </div>
+    </div>
+{% endblock %}

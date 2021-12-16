@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Membres;
+use App\Entity\Soiree;
 use App\Form\AddMembersType;
 use App\Repository\MembresRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,12 +30,17 @@ class MembresController extends AbstractController
     }
 
     #[Route('/membres/select/{id}', name: 'membres_select')]
-    public function membres_select($id, Request $request){
+    public function membres_select($id, Request $request, ManagerRegistry $doctrine){
         $repo = $this->getDoctrine()->getRepository(Membres::class);
         $membre = $repo->find($id);
 
+        /* Get list of party */
+        $party = $doctrine->getRepository(Soiree::class)->findAll();
+
+
         return $this->render("membres/select.html.twig", [
-           "membre" => $membre
+           "membre" => $membre,
+            "party" => $party
         ]);
     }
 
@@ -62,6 +68,26 @@ class MembresController extends AbstractController
         ]);
     }
 
+    #[Route('/membres/join/{idM}/{idP}', name:'membres_join')]
+    public function membres_join($idM, $idP, Request $request, ManagerRegistry $doctrine){
+
+        $em = $doctrine->getManager();
+        $membre = $em->getRepository(Membres::class)->find($idM);
+
+        if (!$membre) {
+            throw $this->createNotFoundException(
+                "Impossible de trouver un membre avec l'id ". $idM
+            );
+        }
+
+        $membre->setIdSoiree($idP);
+        $em->flush();
+
+
+        return $this->redirectToRoute('home');
+
+
+    }
 
 
 
