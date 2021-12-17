@@ -71,29 +71,35 @@ class SoireesController extends AbstractController
 
         $party = $doctrine->getRepository(Membres::class)->find($id);
 
-        $test = new Membres();
+        $transactions = $doctrine->getRepository(Transactions::class)->findBy(['id_soiree' => $id]);
 
-
-
-
-        // Form
-        $transaction = new Transactions();
-
-        $form = $this->createFormBuilder($transaction)
-            ->add('id_soiree', HiddenType::class, ['data' => $id])
-            ->add('id_membre', HiddenType::class, ['data' => "qsd"])
-            ->add('montant', IntegerType::class, ['label' => 'Montant', "attr"=>["class"=>"form-control"]])
-            ->add('send', SubmitType::class, ['label' => 'Envoyer', "attr"=>["class"=>"btn btn-outline-secondary"]])
-            ->getForm();
 
 
 
         return $this->render('soirees/manage.html.twig', [
             'membres' => $membres,
             'party' => $party,
-            'form' => $form->createView()
+            'transactions' => $transactions
         ]);
 
+    }
+
+    #[Route('soirees/manage-post', name:'soirees_manage_post')]
+    public function soirees_manage_post(Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+        $transaction = new Transactions;
+
+        //post input (soirees/manage.html.twig)
+        $transaction->setIdMembre(filter_input(INPUT_POST, 'idM'));
+        $transaction->setIdSoiree(filter_input(INPUT_POST, 'idP'));
+        $transaction->setMontant(filter_input(INPUT_POST, 'montant'));
+
+        $em->persist($transaction);
+
+        $em->flush();
+
+        return $this->redirectToRoute("soirees_list");
     }
 
     #[Route('soirees/delete/{id}', name:'soirees_delete')]

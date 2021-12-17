@@ -5,23 +5,24 @@
 {% block body %}
     <div class="container">
 
+        <!-- FAIRE UN COUNT DES 'MONTANT' -->
+        <h1>Cagnotte totale: <strong>MONTANT TOTAL</strong></h1>
 
-            {% for m in membres %}
-                <form>
+        <hr class="my-4">
+
+        {% for m in membres %}
+                <form method="post" action="{{ path('soirees_manage_post') }}">
                     <div class="input-group mb-3">
                         <input type="hidden" name="idM" value="{{ m.id }}" hidden>
                         <input type="hidden" name="idP" value="{{ party.id }}" hidden>
-                            <label class="input-group-text" for="membre-{{ m.name }}">Solde de {{ m.name }}</label>
-                            <input class="form-control" type="number" name="membre-{{ m.name }}">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Sauvegarder</button>
+                        <label class="input-group-text" for="membre-{{ m.name }}">Solde de {{ m.name }}</label>
+                        <input class="form-control" type="number" id="membre-{{ m.name }}" name="montant">
+
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Sauvegarder</button>
                     </div>
                 </form>
             {% endfor %}
-        <hr class="my-4">
 
-        <div class="input-group mb-3">
-            {{ form(form) }}
-        </div>
 
 
         </div>
