@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de là soirée {{ party.name }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if membres|length != 0 %}
+
+        <h1>Cagnotte totale: <strong>{{ totalTransactions.montant }}</strong></h1>
+        <hr class="my-4">
+
+        {% for m in membres %}
+                <form method="post" action="{{ path('soirees_manage_post') }}">
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="idM" value="{{ m.id }}" hidden>
+                        <input type="hidden" name="idP" value="{{ party.id }}" hidden>
+                        <label class="input-group-text" for="membre-{{ m.name }}">Compte de {{ m.name }}</label>
+                        <input class="form-control" type="number" id="membre-{{ m.name }}" name="montant">
+
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Sauvegarder</button>
+                    </div>
+                </form>
+            {% endfor %}
+
+            <h1>Historique des transactions pour cette sorée</h1>
+            <hr class="my-4">
+
+            <!-- Historique des transactions -->
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Montant</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for t in transactions %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.idMembre }}</td>
+                        <td>{{ t.montant }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+
+            <h1>Répartition des paiements</h1>
+            <hr class="my-4">
+
+            <!-- Répartition des paiements -->
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Montant dû au pot commun</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for t in transactions %}
+                    <tr>
+                        <td>{{ t.id }}</td>
+                        <td>{{ t.idMembre }}</td>
+                        <td>{{ (totalTransactions.montant - t.montant)/(transactions| length - 1) - t.montant }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+
+            <!-- Si on à 0 membres dans là soirée... -->
+        {% else %}
+
+            <div class="text-center">
+                <span>Aucuns membres présents à cette soirée...</span>
+
+                <p>Vous pouvez en ajouter <a href="{{ path('soirees_add') }}">ici</a> </p>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

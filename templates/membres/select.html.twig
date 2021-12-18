@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Selection du membre: {{ membre.name}} {% endblock %}
+
+{% block body %}
+
+    <h1>Vous avez choisis le membre <strong>{{ membre.name }}</strong></h1>
+
+    <a href="#" id="btnJoinParty" onclick="showParty()" class="btn btn-success">Rejoindre une soirée</a>
+
+    <!-- List of party --->
+    <div id="showParty" style="display: none">
+
+        {% for p in party %}
+
+            <a href="{{ path('membres_join', {"idM":membre.id,"idP":p.id}) }}" class="btn btn-success">
+                {{ p.name }}
+            </a>
+
+        {% endfor %}
+    </div>
+
+    <!-- Si le membre fait partie d'une soirée active il pourra y ajouter de l'argent -->
+
+
+    <script>
+        function showParty() {
+            const btnJoinParty = document.getElementById("btnJoinParty");
+
+            document.getElementById('showParty').style.display = 'block';
+        }
+
+    </script>
+
+{% endblock %}
