@@ -19,6 +19,17 @@ class TransactionsRepository extends ServiceEntityRepository
         parent::__construct($registry, Transactions::class);
     }
 
+    public function getTotalTransactions($id){
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.id_soiree = :id')
+            ->setParameter('id', $id)
+            ->select('SUM(t.montant) as montant')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
+
     // /**
     //  * @return Transactions[] Returns an array of Transactions objects
     //  */

@@ -6,6 +6,7 @@ use App\Entity\Membres;
 use App\Entity\Soiree;
 use App\Entity\Transactions;
 use App\Form\AddSoireeType;
+use App\Repository\TransactionsRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -65,21 +66,30 @@ class SoireesController extends AbstractController
     }
 
     #[Route('soirees/manage/{id}', name:'soirees_manage')]
-    public function soirees_manage($id, Request $request, ManagerRegistry $doctrine){
+    public function soirees_manage($id, Request $request, ManagerRegistry $doctrine, TransactionsRepository $tr){
 
         $membres = $doctrine->getRepository(Membres::class)->findBy(['id_soiree' => $id]);
 
         $party = $doctrine->getRepository(Membres::class)->find($id);
 
         $transactions = $doctrine->getRepository(Transactions::class)->findBy(['id_soiree' => $id]);
+        /*$em = $this->getDoctrine()->getManager();
 
+        $query = $em->createQuery('SELECT transactions.id,transactions.montant,membres.name FROM transactions JOIN membres ON membres.id = transactions.id_membre WHERE transactions.id = :id');
+        $query->setParameter(':id', $id);
+        $transactions = $query->getResult();
+*/
 
+        $totalTransactions = $this->getDoctrine()
+            ->getRepository(Transactions::class)
+            ->getTotalTransactions($id);
 
 
         return $this->render('soirees/manage.html.twig', [
             'membres' => $membres,
             'party' => $party,
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'totalTransactions' => $totalTransactions
         ]);
 
     }

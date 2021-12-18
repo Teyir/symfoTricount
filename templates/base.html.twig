@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Accueil</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('home') }}">Accueil</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -45,7 +45,6 @@
                         Membres
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('home') }}">Accueil</a></li>
                         <li><a class="dropdown-item" href="{{ path('membres_add') }}">Ajouter</a></li>
                     </ul>
                 </li>
